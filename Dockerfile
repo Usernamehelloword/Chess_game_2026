@@ -20,15 +20,20 @@ RUN npm run build
 # ==========================================
 # Stage 2: Production PHP Application
 # ==========================================
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
+
+# Set environment variables for Composer
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_NO_INTERACTION=1
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies and web server
+# Install system dependencies and web server (including git and unzip for Composer)
 RUN apk add --no-cache \
     nginx \
     curl \
+    git \
     bash \
     sqlite \
     sqlite-dev \
@@ -77,7 +82,8 @@ RUN composer install \
     --no-interaction \
     --no-scripts \
     --no-autoloader \
-    --prefer-dist
+    --prefer-dist \
+    --ignore-platform-reqs
 
 # Copy application code
 COPY . .
