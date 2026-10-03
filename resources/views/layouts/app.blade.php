@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="google-site-verification" content="ls1eSZ1EQWakUXWtHLZtDcYRC0PNKuHd6QQ3qKASDaU" />
     <title>@yield('title', 'Play Chess Online — Free Online Chess Game | CHess')</title>
     <meta name="description" content="@yield('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, climb the global leaderboard, and learn chess rules.')">
     <meta name="keywords" content="@yield('meta_keywords', 'play chess online, free online chess, chess game online, multiplayer chess, chess vs computer, play chess with friends')">
     <link rel="canonical" href="@yield('canonical', url()->current())">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -16,11 +17,13 @@
     <meta property="og:site_name" content="CHess">
     <meta property="og:title" content="@yield('og_title', 'Play Chess Online — Free Online Chess Game | CHess')">
     <meta property="og:description" content="@yield('og_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.')">
+    <meta property="og:image" content="{{ asset('logo.svg') }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('twitter_title', 'Play Chess Online — Free Online Chess Game | CHess')">
     <meta name="twitter:description" content="@yield('twitter_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.')">
+    <meta name="twitter:image" content="{{ asset('logo.svg') }}">
 
     @yield('structured_data')
 
@@ -33,8 +36,8 @@
 <header class="sticky top-0 z-40 border-b border-zinc-100 bg-white/90 backdrop-blur">
     <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-xl text-white shadow-sm">♞</span>
-            <span class="text-lg font-bold tracking-tight">CHESS</span>
+            <img src="{{ asset('logo.svg') }}" alt="CHess Logo" class="h-9 w-9 rounded-xl shadow-sm">
+            <span class="text-lg font-bold tracking-tight text-zinc-900">CHESS</span>
         </a>
 
         <div class="hidden items-center gap-1 md:flex">
@@ -77,7 +80,7 @@
 
 <footer class="border-t border-zinc-100 bg-white">
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-sm text-zinc-500 sm:flex-row sm:px-6">
-        <span>♞ <strong class="text-zinc-700">CHESS</strong> — Play Chess. Think Ahead.</span>
+        <span class="flex items-center gap-2"><img src="{{ asset('logo.svg') }}" alt="CHess Logo" class="h-5 w-5 rounded"> <strong class="text-zinc-700">CHESS</strong> — Play Chess. Think Ahead.</span>
         <span>&copy; {{ date('Y') }} CHess. Built with Laravel.</span>
     </div>
 </footer>
