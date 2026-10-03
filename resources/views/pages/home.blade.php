@@ -7,21 +7,21 @@
 
 @section('structured_data')
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "CHess - Play Chess Online",
-  "url": "{{ url('/') }}",
-  "applicationCategory": "GameApplication",
-  "genre": "Chess",
-  "operatingSystem": "All",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "Play chess online for free. Real-time multiplayer chess with friends, intelligent computer chess bots, live rankings, and no download required."
-}
+{!! json_encode([
+  '@context' => 'https://schema.org',
+  '@type' => 'WebApplication',
+  'name' => 'CHess - Play Chess Online',
+  'url' => url('/'),
+  'applicationCategory' => 'GameApplication',
+  'genre' => 'Chess',
+  'operatingSystem' => 'All',
+  'offers' => [
+    '@type' => 'Offer',
+    'price' => '0',
+    'priceCurrency' => 'USD',
+  ],
+  'description' => 'Play chess online for free. Real-time multiplayer chess with friends, intelligent computer chess bots, live rankings, and no download required.',
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 

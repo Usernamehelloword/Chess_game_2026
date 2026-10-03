@@ -7,44 +7,44 @@
 
 @section('structured_data')
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do you win a game of chess?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "You win in chess by checkmating your opponent's king, meaning the king is under attack and has no legal escape. You can also win if your opponent runs out of time on their clock or resigns."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can pawns move backwards in chess?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No, pawns can only move forward. They move one square forward (or two squares on their very first move) and capture diagonally forward."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is castling in chess?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Castling is a special chess move allowing the king to move two squares toward a rook, and the rook hops over to the square next to the king. It can only be done if neither piece has moved and the path is clear."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I play chess online without downloading?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes! On CHess, you can play chess online for free directly in your web browser on mobile or desktop without downloading any app."
-      }
-    }
-  ]
-}
+{!! json_encode([
+  '@context' => 'https://schema.org',
+  '@type' => 'FAQPage',
+  'mainEntity' => [
+    [
+      '@type' => 'Question',
+      'name' => 'How do you win a game of chess?',
+      'acceptedAnswer' => [
+        '@type' => 'Answer',
+        'text' => "You win in chess by checkmating your opponent's king, meaning the king is under attack and has no legal escape. You can also win if your opponent runs out of time on their clock or resigns.",
+      ],
+    ],
+    [
+      '@type' => 'Question',
+      'name' => 'Can pawns move backwards in chess?',
+      'acceptedAnswer' => [
+        '@type' => 'Answer',
+        'text' => 'No, pawns can only move forward. They move one square forward (or two squares on their very first move) and capture diagonally forward.',
+      ],
+    ],
+    [
+      '@type' => 'Question',
+      'name' => 'What is castling in chess?',
+      'acceptedAnswer' => [
+        '@type' => 'Answer',
+        'text' => 'Castling is a special chess move allowing the king to move two squares toward a rook, and the rook hops over to the square next to the king. It can only be done if neither piece has moved and the path is clear.',
+      ],
+    ],
+    [
+      '@type' => 'Question',
+      'name' => 'Can I play chess online without downloading?',
+      'acceptedAnswer' => [
+        '@type' => 'Answer',
+        'text' => 'Yes! On CHess, you can play chess online for free directly in your web browser on mobile or desktop without downloading any app.',
+      ],
+    ],
+  ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
