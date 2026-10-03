@@ -26,9 +26,7 @@
 
     @fonts
 
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#FAFAF8] font-sans text-zinc-900 antialiased" data-page="@yield('page', '')" @yield('body-data', '')>
 
