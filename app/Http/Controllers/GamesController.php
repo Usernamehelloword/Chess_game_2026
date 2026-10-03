@@ -46,15 +46,15 @@ final class GamesController extends Controller
         return redirect('/games/'.$game->code);
     }
 
-    /** Join a private game by code. */
+    /** Join a private game by code or invite link. */
     public static function join(Request $request)
     {
-        $data = $request->validate(['code' => ['required', 'string', 'min:4', 'max:8']]);
+        $data = $request->validate(['code' => ['required', 'string']]);
 
         try {
             $game = GameService::joinGame(Auth::user(), $data['code']);
         } catch (RuntimeException $e) {
-            return back()->withErrors(['code' => $e->getMessage()]);
+            return back()->withErrors(['code' => $e->getMessage()])->withInput();
         }
 
         return redirect('/games/'.$game->code);
@@ -64,14 +64,25 @@ final class GamesController extends Controller
     public static function show(Request $request, string $code)
     {
         $user = Auth::user();
-        $game = Game::query()->where('code', $code)->first();
+        $cleanCode = strtoupper(trim($code));
+        $game = Game::query()->where('code', $cleanCode)->first();
         if (! $game) {
             abort(404);
         }
 
         $myColor = GameService::colorOfUser($game, $user);
         if ($myColor === null) {
-            abort(403, 'You are not a player in this game.');
+            // If the game is still waiting for an opponent, auto-join this user as Black
+            if ($game->status === Game::STATUS_WAITING && $game->white_user_id !== $user->id && $game->black_user_id === null) {
+                try {
+                    $game = GameService::joinGame($user, $cleanCode);
+                    $myColor = 'black';
+                } catch (RuntimeException $e) {
+                    abort(403, $e->getMessage());
+                }
+            } else {
+                abort(403, 'You are not a player in this game.');
+            }
         }
 
         $state = GameService::statePayload($game, $user);
@@ -100,15 +111,34 @@ final class GamesController extends Controller
     public static function waitingState(Request $request, string $code)
     {
         $user = Auth::user();
-        $game = Game::query()->where('code', $code)->first();
+        $cleanCode = strtoupper(trim($code));
+        $game = Game::query()->where('code', $cleanCode)->first();
         if (! $game) {
-            return response()->json(['ok' => false, 'error' => 'Not found'], 404);
+            return response()->json(['ok' => false, 'status' => 'cancelled', 'error' => 'Game cancelled or removed']);
         }
         if (GameService::colorOfUser($game, $user) === null) {
             return response()->json(['ok' => false, 'error' => 'Forbidden'], 403);
         }
 
         return response()->json(['ok' => true, 'status' => $game->status]);
+    }
+
+    /** Cancel an open waiting game. */
+    public static function cancel(Request $request, string $code)
+    {
+        $user = Auth::user();
+        $cleanCode = strtoupper(trim($code));
+        $game = Game::query()->where('code', $cleanCode)->first();
+        if (! $game) {
+            return redirect()->route('lobby');
+        }
+
+        if ($game->white_user_id === $user->id && $game->status === Game::STATUS_WAITING) {
+            $game->delete();
+            return redirect()->route('lobby')->with('status', 'Game room cancelled.');
+        }
+
+        return redirect('/games/'.$cleanCode);
     }
 
     /** Play a move. */

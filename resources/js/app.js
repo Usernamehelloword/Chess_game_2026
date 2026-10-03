@@ -28,6 +28,9 @@ if (page === 'game-waiting') {
             if (data.ok && data.status === 'active') {
                 clearInterval(timer);
                 window.location.reload();
+            } else if (data.status === 'cancelled') {
+                clearInterval(timer);
+                window.location.href = '/lobby';
             }
         } catch {
             // retry
@@ -35,13 +38,14 @@ if (page === 'game-waiting') {
     }, 1500);
 }
 
-// Copy game code buttons.
+// Copy game code / link buttons.
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-copy]');
     if (! btn) return;
+    const originalText = btn.innerHTML;
     navigator.clipboard?.writeText(btn.dataset.copy).then(() => {
         btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy Game ID'; }, 1500);
+        setTimeout(() => { btn.innerHTML = originalText; }, 1500);
     });
 });
 

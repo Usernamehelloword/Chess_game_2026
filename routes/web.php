@@ -24,7 +24,8 @@ Route::get('/sitemap.xml', function () {
         ['loc' => route('play'), 'priority' => '0.9', 'changefreq' => 'daily'],
         ['loc' => route('how-to-play'), 'priority' => '0.8', 'changefreq' => 'monthly'],
         ['loc' => route('leaderboard'), 'priority' => '0.8', 'changefreq' => 'daily'],
-        ['loc' => route('bot.setup'), 'priority' => '0.8', 'changefreq' => 'weekly'],
+        ['loc' => route('login'), 'priority' => '0.6', 'changefreq' => 'monthly'],
+        ['loc' => route('register'), 'priority' => '0.6', 'changefreq' => 'monthly'],
     ];
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -77,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/games/{code}', fn (Request $r, string $code) => GamesController::show($r, $code))->name('games.show');
     Route::get('/games/{code}/state', fn (Request $r, string $code) => GamesController::state($r, $code))->name('games.state');
     Route::get('/games/{code}/waiting', fn (Request $r, string $code) => GamesController::waitingState($r, $code))->name('games.waiting');
+    Route::post('/games/{code}/cancel', fn (Request $r, string $code) => GamesController::cancel($r, $code))->name('games.cancel');
     Route::post('/games/{code}/move', fn (Request $r, string $code) => GamesController::move($r, $code))->name('games.move');
     Route::post('/games/{code}/bot-move', fn (Request $r, string $code) => GamesController::botMove($r, $code))->name('games.bot-move');
     Route::post('/games/{code}/resign', fn (Request $r, string $code) => GamesController::resign($r, $code))->name('games.resign');

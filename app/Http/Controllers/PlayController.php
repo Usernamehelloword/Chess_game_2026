@@ -14,6 +14,13 @@ final class PlayController extends Controller
     {
         $user = Auth::user();
 
+        // Clean up stale waiting games older than 2 hours
+        Game::query()
+            ->where('mode', Game::MODE_MULTI)
+            ->where('status', Game::STATUS_WAITING)
+            ->where('created_at', '<', now()->subHours(2))
+            ->delete();
+
         $existing = Game::query()
             ->where('mode', Game::MODE_MULTI)
             ->where('status', Game::STATUS_WAITING)
@@ -21,12 +28,13 @@ final class PlayController extends Controller
             ->orderByDesc('created_at')
             ->first();
 
-        if ($existing && ! $request->boolean('new')) {
+        if ($existing && $request->boolean('rejoin')) {
             return redirect('/games/'.$existing->code);
         }
 
         return view('games.lobby', [
             'timeControls' => GameService::timeControls(),
+            'activeWaitingGame' => $existing,
         ]);
     }
 

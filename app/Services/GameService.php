@@ -124,15 +124,35 @@ final class GameService
 
     public static function joinGame(User $user, string $code): Game
     {
-        $game = Game::query()->where('code', strtoupper(trim($code)))->first();
+        // Support full URLs if pasted (e.g. http://127.0.0.1:8000/games/ABC123)
+        $cleanCode = trim($code);
+        if (preg_match('/games\/([A-Za-z0-9]+)/', $cleanCode, $matches)) {
+            $cleanCode = $matches[1];
+        }
+        $cleanCode = strtoupper(trim($cleanCode));
+
+        $game = Game::query()->where('code', $cleanCode)->first();
         if (! $game) {
-            throw new RuntimeException('No game found with that code.');
+            throw new RuntimeException('No game found with code "'.$cleanCode.'".');
         }
+
+        if ($game->status === Game::STATUS_ACTIVE) {
+            if ($game->white_user_id === $user->id || $game->black_user_id === $user->id) {
+                return $game;
+            }
+            throw new RuntimeException('That game has already started with two players.');
+        }
+
+        if ($game->status === Game::STATUS_FINISHED) {
+            throw new RuntimeException('That game has already ended.');
+        }
+
         if ($game->status !== Game::STATUS_WAITING) {
-            throw new RuntimeException('That game has already started.');
+            throw new RuntimeException('That game is not available to join.');
         }
+
         if ($game->white_user_id === $user->id) {
-            return $game; // creator returning to their lobby
+            throw new RuntimeException('You are already the host of this room (White). To test 1v1 on the same computer, open an Incognito window, log in with a different account, and join with this Game ID.');
         }
 
         $game->black_user_id = $user->id;
