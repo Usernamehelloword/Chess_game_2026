@@ -14,13 +14,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="CHess">
-    <meta property="og:title" content="@yield('og_title', View::getSection('title', 'Play Chess Online — Free Online Chess Game | CHess'))">
-    <meta property="og:description" content="@yield('og_description', View::getSection('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.'))">
+    <meta property="og:title" content="@yield('og_title', 'Play Chess Online — Free Online Chess Game | CHess')">
+    <meta property="og:description" content="@yield('og_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.')">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('twitter_title', View::getSection('title', 'Play Chess Online — Free Online Chess Game | CHess'))">
-    <meta name="twitter:description" content="@yield('twitter_description', View::getSection('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.'))">
+    <meta name="twitter:title" content="@yield('twitter_title', 'Play Chess Online — Free Online Chess Game | CHess')">
+    <meta name="twitter:description" content="@yield('twitter_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.')">
 
     @yield('structured_data')
 

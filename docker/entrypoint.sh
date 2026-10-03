@@ -7,6 +7,7 @@ echo "--> Configuring Nginx to listen on port $PORT..."
 sed -i "s/__PORT__/${PORT}/g" /etc/nginx/http.d/default.conf
 
 # 2. SQLite database auto-creation if using SQLite
+DB_DIR="/var/www/html/database"
 if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     DB_PATH="${DB_DATABASE:-/var/www/html/database/database.sqlite}"
     DB_DIR=$(dirname "$DB_PATH")
@@ -17,10 +18,16 @@ if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     fi
     chown -R www-data:www-data "$DB_DIR"
     chmod -R 775 "$DB_DIR"
+    chmod 664 "$DB_PATH" || true
 fi
 
 # 3. Ensure permissions on storage and bootstrap/cache
 echo "--> Setting storage permissions..."
+mkdir -p /var/www/html/storage/framework/cache/data \
+         /var/www/html/storage/framework/sessions \
+         /var/www/html/storage/framework/views \
+         /var/www/html/storage/logs \
+         /var/www/html/bootstrap/cache
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
@@ -48,6 +55,10 @@ if [ "${SEED_DATABASE:-false}" = "true" ]; then
     echo "--> Seeding database..."
     php artisan db:seed --force || true
 fi
+
+# Ensure permissions after migrations and seeding created or updated files
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache "$DB_DIR"
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache "$DB_DIR"
 
 echo "--> Starting PHP-FPM..."
 php-fpm -D
