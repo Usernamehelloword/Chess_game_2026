@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Join Game — CHess')
+@section('title', 'Join Online Chess Game — Play with Friends | CHess')
+@section('meta_description', 'Join an online chess game with your friends using your unique Game ID room code. Instant multiplayer chess in your browser.')
+@section('meta_keywords', 'join chess game, play chess with friends, online chess room, multiplayer chess')
 
 @section('content')
 <div class="mx-auto max-w-md py-10">

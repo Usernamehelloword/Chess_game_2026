@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Find an Opponent — CHess')
+@section('title', 'Multiplayer Chess Lobby — Create or Join Game | CHess')
+@section('meta_description', 'Create a private multiplayer chess room or join a game with friends using a Game ID. Play real-time online chess matches with customizable time controls.')
+@section('meta_keywords', 'multiplayer chess, play chess with friends, online chess multiplayer, chess game room, chess match online')
 
 @section('content')
 <div class="mx-auto max-w-xl py-8">

@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'CHess — Play Chess Online')</title>
+    <title>@yield('title', 'Play Chess Online — Free Online Chess Game | CHess')</title>
+    <meta name="description" content="@yield('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, climb the global leaderboard, and learn chess rules.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'play chess online, free online chess, chess game online, multiplayer chess, chess vs computer, play chess with friends')">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="CHess">
+    <meta property="og:title" content="@yield('og_title', View::getSection('title', 'Play Chess Online — Free Online Chess Game | CHess'))">
+    <meta property="og:description" content="@yield('og_description', View::getSection('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.'))">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('twitter_title', View::getSection('title', 'Play Chess Online — Free Online Chess Game | CHess'))">
+    <meta name="twitter:description" content="@yield('twitter_description', View::getSection('meta_description', 'Play chess online for free. Enjoy multiplayer chess matches with friends, challenge smart computer chess bots, and climb the leaderboard.'))">
+
+    @yield('structured_data')
 
     @fonts
 

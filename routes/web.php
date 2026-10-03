@@ -18,6 +18,29 @@ Route::get('/play', fn () => PagesController::play())->name('play');
 Route::get('/how-to-play', fn () => PagesController::howToPlay())->name('how-to-play');
 Route::get('/leaderboard', fn () => PagesController::leaderboard())->name('leaderboard');
 
+Route::get('/sitemap.xml', function () {
+    $urls = [
+        ['loc' => route('home'), 'priority' => '1.0', 'changefreq' => 'daily'],
+        ['loc' => route('play'), 'priority' => '0.9', 'changefreq' => 'daily'],
+        ['loc' => route('how-to-play'), 'priority' => '0.8', 'changefreq' => 'monthly'],
+        ['loc' => route('leaderboard'), 'priority' => '0.8', 'changefreq' => 'daily'],
+        ['loc' => route('bot.setup'), 'priority' => '0.8', 'changefreq' => 'weekly'],
+    ];
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    foreach ($urls as $url) {
+        $xml .= '<url>';
+        $xml .= '<loc>'.htmlspecialchars($url['loc']).'</loc>';
+        $xml .= '<changefreq>'.$url['changefreq'].'</changefreq>';
+        $xml .= '<priority>'.$url['priority'].'</priority>';
+        $xml .= '</url>';
+    }
+    $xml .= '</urlset>';
+
+    return response($xml, 200)->header('Content-Type', 'text/xml');
+});
+
 // ---------------------------------------------------------------------
 // Authentication
 // ---------------------------------------------------------------------
